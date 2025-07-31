@@ -5,6 +5,7 @@ from sqlmodel import select
 
 router = APIRouter()
 
+
 @router.get("/task/{task_id}")
 async def get_task_by_id(task_id: int, session: SessionDepends ):
     statement = session.select(Task).where(Task.id == task_id)
