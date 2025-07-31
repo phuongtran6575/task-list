@@ -1,8 +1,9 @@
 from typing import Annotated
 from sqlmodel import SQLModel, create_engine, Session
 from fastapi import Depends
+from models.task_model import Task
 
-engine = create_engine("sqlite:///task.db")
+engine = create_engine("sqlite:///task.db",  echo=True)
 SQLModel.metadata.create_all(engine)
 def get_session():
     with Session(engine) as session:

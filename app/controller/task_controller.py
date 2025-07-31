@@ -6,40 +6,30 @@ from sqlmodel import select
 router = APIRouter()
 
 
-@router.get("/task/{task_id}")
-async def get_task_by_id(task_id: int, session: SessionDepends ):
-    statement = session.select(Task).where(Task.id == task_id)
-    task_result = session.exec(statement).first()
+@router.get("/task")
+async def get_task_by_id(id: int, session: SessionDepends):
+    statment = select(Task).where(Task.id == id)
+    task_result = session.exec(statment).first()
     return task_result
 
 @router.get("/tasks")
-async def get_all_tasks(session: SessionDepends):
+async def get_all_task(session: SessionDepends):
     statement = select(Task)
     tasks_result = session.exec(statement).all()
-    return
+    return tasks_result
 
-@router.post("/task")
-async def create_task(task: Task, session: SessionDepends):
+@router.post("/tasks")
+async def create_task(task: Task,session: SessionDepends):
     session.add(task)
     session.commit()
     session.refresh(task)
     return task
 
-@router.put("/task")
-async def update_task(task: Task, session: SessionDepends):
-    statement = session.select(Task).where(Task.id == task.id)
-    task_result = session.exec(statement).first()
-    task_result = task
-    session.commit()
-    session.refresh(task_result)
-    return task_result
-
 @router.delete("/task")
-async def delete_task(task_id: int, session: SessionDepends):
-    statement = session.select(Task).where(Task.id == task_id)
-    task_result = session.excec(statement).first()
-    session.delete()
+async def delete_task(id: int, session: SessionDepends):
+    statement = select(Task).where(Task.id == id)
+    task_result = session.exec(statement).first()
+    session.delete(task_result)
     session.commit()
-    session.refresh(task_result)
-    return task_result
     
+    return {"Ok"}
