@@ -2,7 +2,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlmodel import Session, select
 from models.user_models import User
 from passlib.context import CryptContext
-from todolist.app.database.sqlite_database_config import SessionDepends
+from database.sqlite_database_config import SessionDepends
 from passlib.context import  CryptContext
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -21,4 +21,5 @@ def get_user_by_username(session: Session, username: str):
 
 def authenticate_user(session: Session, username: str):
     user = get_user_by_username(session, username)
+    
     return user
